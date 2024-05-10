@@ -1,0 +1,79 @@
+public class Main
+{
+
+static class Node{
+int data;
+Node left;
+Node right;
+Node(int d)
+{
+data=d;
+left=null;
+right=null;
+}
+}
+
+static Node createBinarySearchTree(int val,Node root)
+{
+
+if(root==null)
+{
+root=new Node(val);
+return root;
+}
+if(val<root.data)
+root.left=createBinarySearchTree(val,root.left);
+else
+root.right=createBinarySearchTree(val,root.right);
+return root;
+}
+static Node deleteNode(Node root, int val)
+{
+    if(root.data>val)
+    root.left=deleteNode(root.left,val);
+    else if(root.data<val)
+    root.right=deleteNode(root.right,val);
+    else
+    {
+        if(root.left==null && root.right==null)
+        return null;
+        if(root.left==null)
+        return root.right;
+        else if(root.right==null)
+        return root.left;
+         
+         Node temp=inordersucessor(root.right);
+         root.data=temp.data;
+         root.right=deleteNode(root.right,temp.data);
+    }
+    return root;
+        
+}
+static Node inordersucessor(Node root)
+{
+    while(root.left!=null)
+    root=root.left;
+    return root;
+}
+static void inorder(Node root)
+{
+if(root==null)
+return;
+inorder(root.left);
+System.out.print(root.data+" ");
+inorder(root.right);
+}
+
+
+public static void main(String[] args) {
+int []node={5,8,2,9,7,6};
+Node root=null;
+for(int i=0;i<node.length;i++)
+root=createBinarySearchTree(node[i],root);
+inorder(root);
+System.out.println();
+deleteNode(root,5);
+System.out.println();
+inorder(root);
+}
+}
